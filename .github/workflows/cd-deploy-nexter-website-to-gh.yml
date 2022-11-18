@@ -1,0 +1,51 @@
+name: Deploy Nexter Website to Github Pages
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Nexter Website
+    runs-on: ubuntu-latest
+    steps:
+      - name: "📥 checkout repository"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: "🔄  Cache node_modules"
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: "🔧 Setup NodeJS 14.19.1"
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.19.1
+
+      - name: "🔧 Install npm@latest"
+        run: npm i -g npm@latest
+
+      - name: "📦  Install Nexter Website Development dependencies"
+        run: |
+          bash scripts/install.bash
+
+      - name: "🏗️  Build Frontend Nexter Website"
+        run: |
+          bash scripts/assets-process.bash
+          bash scripts/frontend-nexter-website-build.bash production
+
+      - name: "🚚  Package Nexter Website"
+        run: |
+          bash scripts/package-clean.bash
+          bash scripts/package-nexter-website.bash
+
+      - name: "🚀 Deploy to GitHub Pages"
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages-nexter-website
+          folder: package/nexter-website
+

@@ -1,0 +1,23 @@
+@import "../../abstracts/variables.scss";
+
+$cmp: "feature";
+
+.#{$cmp} {
+  &__base {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-gap: 1.5rem 2.5rem;
+  }
+
+  &__icon {
+    fill: $color-primary;
+    width: 4.5rem;
+    height: 4.5rem;
+    grid-row: 1 / span 2;
+    transform: translateY(-1rem);
+  }
+
+  &__text {
+    font-size: 1.7rem;
+  }
+}

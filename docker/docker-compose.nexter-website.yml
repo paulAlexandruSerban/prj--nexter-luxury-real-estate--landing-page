@@ -1,0 +1,31 @@
+---
+version: "3.7"
+services:
+
+  # ---------------------------------------------------------------------
+  # | Nginx-Service                                                     |
+  # ---------------------------------------------------------------------
+  nginx:
+    build:
+      context: ../backend/nexter-website
+      dockerfile: nexter-website.Dockerfile
+    container_name: nexter-website
+    restart: unless-stopped
+    volumes:
+      - ../frontend/nexter-website/dist:/usr/share/nginx/html
+    labels:
+      - traefik.enable=true
+      # Routers
+      - traefik.http.routers.nexter-website.entrypoints=web
+      - traefik.http.routers.nexter-website.middlewares=test-redirectscheme
+      - traefik.http.routers.nexter-website-secure.entrypoints=websecure
+      - traefik.http.routers.nexter-website-secure.tls.certresolver=myresolver
+      - traefik.http.routers.nexter-website-secure.tls=true
+      - traefik.http.routers.nexter-website-secure.middlewares=test-compress,test-redirectscheme
+      # Services
+      - traefik.http.services.nexter-website-secure.loadbalancer.server.port=80
+      # Middlewares
+      - traefik.http.middlewares.test-compress.compress=true
+      - traefik.http.middlewares.test-redirectscheme.redirectscheme.scheme=https
+      - traefik.http.middlewares.test-redirectscheme.redirectscheme.permanent=true
+      - traefik.http.middlewares.test-redirectscheme.redirectscheme.port=443
