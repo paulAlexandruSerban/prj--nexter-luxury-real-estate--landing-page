@@ -1,0 +1,11 @@
+@import "../../abstracts/variables.scss";
+
+$cmp: "footer";
+
+.#{$cmp} {
+  &__base {
+    background-color: $color-secondary;
+    grid-column: full-start / full-end;
+    padding: 8rem;
+  }
+}

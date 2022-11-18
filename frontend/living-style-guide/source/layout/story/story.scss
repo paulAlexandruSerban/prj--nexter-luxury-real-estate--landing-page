@@ -1,0 +1,95 @@
+@import "../../abstracts/variables.scss";
+
+$cmp: "story";
+
+.#{$cmp} {
+  &__base {
+    display: grid;
+    grid-column: full-start / full-end;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, 1fr);
+
+    @include respond(min-tab-port) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__pictures {
+    background-color: $color-primary;
+    grid-column: 1 / -1;
+    /* stylelint-disable */
+    background-image:
+      linear-gradient(
+        rgba($color-primary, 0.5),
+        rgba($color-primary, 0.5)
+      ),
+      url("../../../assets/images/back.jpg");
+    /* stylelint-enable */
+    background-size: cover;
+
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+    align-items: center;
+
+    padding: 6rem;
+
+    @include respond(min-tab-port) {
+      grid-column: 1 / 2;
+      grid-row: 1 / -1;
+      padding: 0;
+    }
+  }
+
+  &__image {
+    &--1 {
+      width: 100%;
+      grid-row: 1 / -1;
+      grid-column: 1 / 5;
+      box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1);
+
+      @include respond(min-tab-port) {
+        grid-column: 2 / 6;
+        grid-row: 2 / 6;
+      }
+    }
+
+    &--2 {
+      width: 100%;
+      grid-row: 1 / -1;
+      grid-column: 4 / 7;
+      z-index: 20;
+      box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+
+      @include respond(min-tab-port) {
+        grid-row: 4 / 6;
+        width: 115%;
+      }
+    }
+  }
+
+  &__content {
+    background-color: $color-grey-light-1;
+    grid-row: 1 / -1;
+    padding: 6rem 8vw;
+
+    /**
+    CSS Grid solution
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    */
+
+    // because it is a one dimensional layout we SHOULD use just Flexbox and CSS Grid is not needed
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  &__text {
+    font-size: 1.5rem;
+    font-style: italic;
+    margin-bottom: 4rem;
+  }
+}
